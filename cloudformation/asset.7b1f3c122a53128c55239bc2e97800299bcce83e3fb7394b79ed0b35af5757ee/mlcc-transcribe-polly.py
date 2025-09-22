@@ -29,7 +29,11 @@ def lambda_handler(event, context):
     WAV_SAMPLE_WIDTH_BYTES = 2 # Polly's output is a stream of 16-bits (2 bytes) samples
 
     print('translating from',sourceLanguage,'to',targetLanguage)
+ 
+    engine = os.environ.get('voiceEngine', 'standard')
     #we pick a random voice
+    voices = polly.describe_voices(Engine=engine, LanguageCode=targetLanguage)
+
     voices = polly.describe_voices(LanguageCode=targetLanguage)
     voiceId = voices['Voices'][0]['Id']
     result = translator.translate_text(Text=text, SourceLanguageCode = sourceLanguage,TargetLanguageCode=targetLanguage)
